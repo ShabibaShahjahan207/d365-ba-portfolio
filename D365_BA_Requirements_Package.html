@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D365 F&O BA Requirements Package — NorthPeak Energy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --border: #2a3347;
+    --accent: #e8a020;
+    --accent2: #3b82f6;
+    --text: #e2e8f0;
+    --text-muted: #8899aa;
+    --text-dim: #556677;
+    --green: #22c55e;
+    --red: #ef4444;
+    --purple: #a78bfa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .header-left h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .header-left .subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .header-right .analyst {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .header-right .date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 8px;
+    background: rgba(232, 160, 32, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(232, 160, 32, 0.3);
+  }
+
+  /* ── NAV TABS ── */
+  .nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+  }
+
+  .nav-tab {
+    padding: 12px 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 32px 40px; max-width: 1200px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── SECTION HEADER ── */
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* ── OVERVIEW CARDS ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .stat-card .label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .stat-card .value {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .stat-card .sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── SCENARIO BOX ── */
+  .scenario-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+
+  .scenario-box h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .scenario-box p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── USER STORIES ── */
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .story-header:hover { background: var(--surface2); }
+
+  .story-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(232, 160, 32, 0.1);
+    border: 1px solid rgba(232, 160, 32, 0.2);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+
+  .story-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .story-priority {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+    margin-left: 12px;
+  }
+
+  .priority-high { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .priority-medium { background: rgba(232,160,32,0.1); color: var(--accent); border: 1px solid rgba(232,160,32,0.2); }
+  .priority-low { background: rgba(59,130,246,0.1); color: var(--accent2); border: 1px solid rgba(59,130,246,0.2); }
+
+  .story-chevron {
+    color: var(--text-dim);
+    margin-left: 12px;
+    transition: transform 0.2s;
+  }
+
+  .story-card.open .story-chevron { transform: rotate(180deg); }
+
+  .story-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .story-card.open .story-body { display: block; }
+
+  .story-statement {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  .ac-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .ac-list { list-style: none; }
+
+  .ac-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ac-list li:last-child { border-bottom: none; }
+
+  .ac-check {
+    color: var(--green);
+    font-size: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── GAP ANALYSIS ── */
+  .gap-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .gap-table th {
+    background: var(--surface2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'IBM Plex Mono', monospace;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gap-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .gap-table tr:last-child td { border-bottom: none; }
+  .gap-table tr:hover td { background: var(--surface2); }
+
+  .gap-area {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  .gap-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .gap-high { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .gap-med { background: rgba(232,160,32,0.1); color: var(--accent); border: 1px solid rgba(232,160,32,0.2); }
+  .gap-low { background: rgba(59,130,246,0.1); color: var(--accent2); border: 1px solid rgba(59,130,246,0.2); }
+
+  /* ── PROCESS FLOW ── */
+  .flow-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  .flow-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 24px;
+  }
+
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    align-items: start;
+  }
+
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 20px;
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .flow-node {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-bottom: 12px;
+    border: 2px solid var(--border);
+  }
+
+  .flow-node.current { background: rgba(232,160,32,0.15); border-color: var(--accent); }
+  .flow-node.future { background: rgba(34,197,94,0.1); border-color: var(--green); }
+  .flow-node.gap { background: rgba(239,68,68,0.1); border-color: var(--red); }
+
+  .flow-label {
+    font-size: 11px;
+    color: var(--text);
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .flow-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .flow-state {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .state-current { background: rgba(232,160,32,0.1); color: var(--accent); }
+  .state-future { background: rgba(34,197,94,0.1); color: var(--green); }
+  .state-gap { background: rgba(239,68,68,0.1); color: var(--red); }
+
+  /* ── KPI DASHBOARD ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 10px;
+  }
+
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .kpi-change {
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .kpi-change.positive { color: var(--green); }
+  .kpi-change.negative { color: var(--red); }
+
+  .kpi-bar-container {
+    margin-top: 12px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .kpi-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  .chart-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .chart-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 120px;
+  }
+
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .bar-wrap {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 100px;
+  }
+
+  .bar {
+    width: 18px;
+    border-radius: 3px 3px 0 0;
+    transition: opacity 0.2s;
+  }
+
+  .bar:hover { opacity: 0.8; }
+  .bar.current { background: var(--accent); }
+  .bar.target { background: var(--accent2); opacity: 0.5; }
+
+  .bar-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* ── AUTHOR NOTE ── */
+  .author-note {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .author-note strong {
+    color: var(--accent2);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>D365 F&O Finance Module — BA Requirements Package <span class="tag">PORTFOLIO PROJECT</span></h1>
+    <div class="subtitle">NorthPeak Energy Corp. · Accounts Payable & Vendor Management Implementation</div>
+  </div>
+  <div class="header-right">
+    <div class="analyst">Prepared by: Shabiba Shahjahan, BA</div>
+    <div class="date">July 2026 · D365 Finance & Operations</div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-tab active" onclick="showSection('overview', this)">Overview</div>
+  <div class="nav-tab" onclick="showSection('stories', this)">User Stories</div>
+  <div class="nav-tab" onclick="showSection('gap', this)">Gap Analysis</div>
+  <div class="nav-tab" onclick="showSection('process', this)">Process Flow</div>
+  <div class="nav-tab" onclick="showSection('kpi', this)">KPI Dashboard</div>
+</div>
+
+<div class="main">
+
+  <!-- ── OVERVIEW ── -->
+  <div class="section active" id="overview">
+    <div class="section-title">Project Overview</div>
+    <div class="section-desc">Business requirements package for D365 F&O Finance module implementation — Accounts Payable & Vendor Management workstream</div>
+
+    <div class="overview-grid">
+      <div class="stat-card">
+        <div class="label">User Stories</div>
+        <div class="value">5</div>
+        <div class="sub">AP & Vendor Management</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Gaps Identified</div>
+        <div class="value">8</div>
+        <div class="sub">3 High · 3 Med · 2 Low</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Process Steps</div>
+        <div class="value">5</div>
+        <div class="sub">Current → Future State</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Sprint Target</div>
+        <div class="value">Q3</div>
+        <div class="sub">UAT August 2026</div>
+      </div>
+    </div>
+
+    <div class="scenario-box">
+      <h3>Business Scenario</h3>
+      <p>NorthPeak Energy Corp. is a mid-size Canadian energy company migrating from a legacy ERP to Microsoft Dynamics 365 Finance & Operations. This requirements package covers the Accounts Payable and Vendor Management workstream — specifically the invoice processing, vendor onboarding, and payment approval workflows. The current state relies on manual data entry, disconnected spreadsheets, and email-based approval chains that create reconciliation errors and payment delays. The D365 F&O implementation will automate invoice matching, centralize vendor records, and introduce a structured digital approval workflow.</p>
+    </div>
+
+    <div class="author-note">
+      <strong>BA Note — Methodology</strong>
+      This requirements package was developed following requirements elicitation sessions with the AP Manager, Finance Controller, and Procurement Lead. Requirements are documented using Agile user story format with INVEST-compliant acceptance criteria. All process flows represent current state validated by process walkthroughs and are mapped against D365 F&O standard capabilities to identify configuration and customization requirements.
+    </div>
+  </div>
+
+  <!-- ── USER STORIES ── -->
+  <div class="section" id="stories">
+    <div class="section-title">User Stories & Acceptance Criteria</div>
+    <div class="section-desc">5 user stories covering AP invoice processing, vendor onboarding, and payment approval workflows</div>
+
+    <div class="story-card" onclick="toggleStory(this)">
+      <div class="story-header">
+        <span class="story-id">US-001</span>
+        <span class="story-title">Automated 3-Way Invoice Matching</span>
+        <span class="story-priority priority-high">HIGH</span>
+        <span class="story-chevron">▼</span>
+      </div>
+      <div class="story-body">
+        <div class="story-statement">"As an Accounts Payable Clerk, I want D365 F&O to automatically match vendor invoices against purchase orders and goods receipts, so that I can eliminate manual matching errors and reduce invoice processing time."</div>
+        <div class="ac-title">Acceptance Criteria</div>
+        <ul class="ac-list">
+          <li><span class="ac-check">✓</span>System automatically matches invoice to PO and GR within 30 seconds of invoice entry</li>
+          <li><span class="ac-check">✓</span>Tolerances of ±2% on unit price and ±1 unit on quantity are configurable by finance admin</li>
+          <li><span class="ac-check">✓</span>Unmatched invoices are automatically flagged and routed to AP supervisor queue with mismatch details</li>
+          <li><span class="ac-check">✓</span>Matched invoices proceed to payment approval workflow without manual intervention</li>
+          <li><span class="ac-check">✓</span>All matching decisions are logged with timestamp and user ID for audit trail</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="story-card" onclick="toggleStory(this)">
+      <div class="story-header">
+        <span class="story-id">US-002</span>
+        <span class="story-title">Vendor Onboarding & Master Data Management</span>
+        <span class="story-priority priority-high">HIGH</span>
+        <span class="story-chevron">▼</span>
+      </div>
+      <div class="story-body">
+        <div class="story-statement">"As a Procurement Officer, I want to onboard new vendors directly in D365 F&O with required documentation and approval workflows, so that vendor master data is accurate, complete, and audit-ready from day one."</div>
+        <div class="ac-title">Acceptance Criteria</div>
+        <ul class="ac-list">
+          <li><span class="ac-check">✓</span>Vendor onboarding form captures: legal name, business number, banking details, payment terms, and tax classification</li>
+          <li><span class="ac-check">✓</span>System requires upload of W8/W9 or TD1 form before vendor record can be activated</li>
+          <li><span class="ac-check">✓</span>New vendor requests trigger a two-level approval workflow (Procurement Lead → Finance Controller)</li>
+          <li><span class="ac-check">✓</span>Duplicate vendor detection alerts users when a new vendor matches existing name, BN, or banking details</li>
+          <li><span class="ac-check">✓</span>Vendors are marked Active/Inactive rather than deleted to preserve historical records</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="story-card" onclick="toggleStory(this)">
+      <div class="story-header">
+        <span class="story-id">US-003</span>
+        <span class="story-title">Digital Payment Approval Workflow</span>
+        <span class="story-priority priority-high">HIGH</span>
+        <span class="story-chevron">▼</span>
+      </div>
+      <div class="story-body">
+        <div class="story-statement">"As a Finance Controller, I want payment batches to route through a configurable digital approval chain in D365 F&O, so that all disbursements are authorized before processing and the approval trail is fully auditable."</div>
+        <div class="ac-title">Acceptance Criteria</div>
+        <ul class="ac-list">
+          <li><span class="ac-check">✓</span>Payment batches under $10K require single approval (AP Manager); $10K–$100K require two approvals; $100K+ require CFO sign-off</li>
+          <li><span class="ac-check">✓</span>Approvers receive email notification with payment summary and one-click approve/reject from notification</li>
+          <li><span class="ac-check">✓</span>Rejected batches return to AP queue with mandatory rejection reason</li>
+          <li><span class="ac-check">✓</span>Approval SLA of 48 business hours triggers escalation notification to next level approver</li>
+          <li><span class="ac-check">✓</span>Complete approval chain history is visible on each payment batch record</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="story-card" onclick="toggleStory(this)">
+      <div class="story-header">
+        <span class="story-id">US-004</span>
+        <span class="story-title">AP Aging & Reporting Dashboard</span>
+        <span class="story-priority priority-medium">MEDIUM</span>
+        <span class="story-chevron">▼</span>
+      </div>
+      <div class="story-body">
+        <div class="story-statement">"As a Finance Manager, I want a real-time AP aging report and vendor payment dashboard in D365 F&O, so that I can monitor outstanding liabilities, identify overdue invoices, and make timely payment decisions."</div>
+        <div class="ac-title">Acceptance Criteria</div>
+        <ul class="ac-list">
+          <li><span class="ac-check">✓</span>AP aging report displays outstanding invoices bucketed by: Current, 1–30 days, 31–60 days, 61–90 days, 90+ days</li>
+          <li><span class="ac-check">✓</span>Dashboard refreshes in real-time and filters by vendor, cost centre, and entity</li>
+          <li><span class="ac-check">✓</span>Report is exportable to Excel and PDF with one click</li>
+          <li><span class="ac-check">✓</span>Early payment discount opportunities are flagged for invoices with net-10 or net-15 terms</li>
+          <li><span class="ac-check">✓</span>Dashboard is accessible to Finance Manager and above without IT assistance</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="story-card" onclick="toggleStory(this)">
+      <div class="story-header">
+        <span class="story-id">US-005</span>
+        <span class="story-title">Vendor Self-Service Portal Integration</span>
+        <span class="story-priority priority-medium">MEDIUM</span>
+        <span class="story-chevron">▼</span>
+      </div>
+      <div class="story-body">
+        <div class="story-statement">"As a Vendor, I want to submit invoices and check payment status through a self-service portal connected to D365 F&O, so that I can reduce phone inquiries to NorthPeak's AP team and have visibility into my payment timeline."</div>
+        <div class="ac-title">Acceptance Criteria</div>
+        <ul class="ac-list">
+          <li><span class="ac-check">✓</span>Vendors can log in via secure portal and submit invoices with PO reference number</li>
+          <li><span class="ac-check">✓</span>Portal displays real-time invoice status: Received, Under Review, Approved, Scheduled for Payment, Paid</li>
+          <li><span class="ac-check">✓</span>Vendors receive automated email confirmation within 1 hour of invoice submission</li>
+          <li><span class="ac-check">✓</span>Portal rejects invoices missing required fields with specific error messages</li>
+          <li><span class="ac-check">✓</span>Vendor portal data syncs to D365 F&O vendor master in real time via API integration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GAP ANALYSIS ── -->
+  <div class="section" id="gap">
+    <div class="section-title">Gap Analysis — Current State vs D365 F&O</div>
+    <div class="section-desc">8 gaps identified across AP processing, vendor management, and reporting capabilities</div>
+
+    <table class="gap-table">
+      <thead>
+        <tr>
+          <th>Process Area</th>
+          <th>Current State</th>
+          <th>D365 F&O Future State</th>
+          <th>Gap</th>
+          <th>Priority</th>
+          <th>Resolution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="gap-area">Invoice Matching</td>
+          <td>Manual 3-way match in Excel; 2–3 days processing time</td>
+          <td>Automated matching with configurable tolerances</td>
+          <td>No automated matching capability in legacy system</td>
+          <td><span class="gap-badge gap-high">HIGH</span></td>
+          <td>D365 standard configuration — no customization required</td>
+        </tr>
+        <tr>
+          <td class="gap-area">Vendor Onboarding</td>
+          <td>Email-based process; data entered manually in two separate systems</td>
+          <td>Single D365 onboarding form with workflow and document upload</td>
+          <td>Dual-system entry creates duplicate records and data inconsistency</td>
+          <td><span class="gap-badge gap-high">HIGH</span></td>
+          <td>Legacy system decommission + D365 vendor portal configuration</td>
+        </tr>
+        <tr>
+          <td class="gap-area">Payment Approvals</td>
+          <td>Email approval chain; no escalation or audit trail</td>
+          <td>Configurable digital workflow with SLA escalation</td>
+          <td>No approval audit trail; payments occasionally processed without authorization</td>
+          <td><span class="gap-badge gap-high">HIGH</span></td>
+          <td>D365 workflow engine configuration; approval matrix definition required</td>
+        </tr>
+        <tr>
+          <td class="gap-area">AP Reporting</td>
+          <td>Monthly Excel aging report produced manually by AP team</td>
+          <td>Real-time Power BI dashboard integrated with D365 data</td>
+          <td>No real-time visibility; reports are stale by distribution</td>
+          <td><span class="gap-badge gap-med">MEDIUM</span></td>
+          <td>Power BI connector setup + report development (BA to define requirements)</td>
+        </tr>
+        <tr>
+          <td class="gap-area">Vendor Communication</td>
+          <td>Vendors call AP team for invoice status; high inbound call volume</td>
+          <td>Vendor self-service portal with real-time status</td>
+          <td>No self-service capability; AP team spends ~30% of time on status inquiries</td>
+          <td><span class="gap-badge gap-med">MEDIUM</span></td>
+          <td>D365 vendor portal activation + API integration scoping required</td>
+        </tr>
+        <tr>
+          <td class="gap-area">Tax Compliance</td>
+          <td>Manual tax code entry; inconsistent application across vendors</td>
+          <td>Automated tax calculation via D365 tax engine</td>
+          <td>Tax errors in ~8% of invoices requiring manual correction</td>
+          <td><span class="gap-badge gap-med">MEDIUM</span></td>
+          <td>Tax configuration workshop required with Finance and external tax advisor</td>
+        </tr>
+        <tr>
+          <td class="gap-area">Multi-Currency</td>
+          <td>Foreign invoices converted manually using spot rates from finance team</td>
+          <td>D365 automated exchange rate integration</td>
+          <td>Exchange rate lag creates reconciliation variances</td>
+          <td><span class="gap-badge gap-low">LOW</span></td>
+          <td>D365 exchange rate provider integration — standard configuration</td>
+        </tr>
+        <tr>
+          <td class="gap-area">Document Storage</td>
+          <td>Invoice scans stored in shared drive; no link to transactions</td>
+          <td>Documents attached directly to D365 invoice records</td>
+          <td>Audit retrieval takes hours; documents occasionally lost or misfiled</td>
+          <td><span class="gap-badge gap-low">LOW</span></td>
+          <td>SharePoint integration with D365 document management — standard setup</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="author-note">
+      <strong>BA Note — Gap Resolution Approach</strong>
+      Gaps rated HIGH will be addressed in Sprint 1–2 as they represent compliance and control risks. MEDIUM gaps will be addressed in Sprint 3–4 as efficiency improvements. LOW gaps will be addressed post-go-live as continuous improvement items. All gaps have been reviewed and prioritized with the Finance Controller and AP Manager in the requirements sign-off session dated July 15, 2026.
+    </div>
+  </div>
+
+  <!-- ── PROCESS FLOW ── -->
+  <div class="section" id="process">
+    <div class="section-title">Process Flow — Current State vs Future State</div>
+    <div class="section-desc">Invoice-to-payment process redesign mapping current pain points to D365 F&O future state</div>
+
+    <div class="flow-container">
+      <div class="flow-title">CURRENT STATE — Invoice to Payment (Manual)</div>
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="flow-node current">📄</div>
+          <div class="flow-label">Invoice Received</div>
+          <div class="flow-sub">Email / Post</div>
+          <div class="flow-state state-current">MANUAL</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node gap">⚠️</div>
+          <div class="flow-label">Manual Data Entry</div>
+          <div class="flow-sub">Legacy ERP + Excel</div>
+          <div class="flow-state state-gap">ERROR PRONE</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node gap">⚠️</div>
+          <div class="flow-label">3-Way Match</div>
+          <div class="flow-sub">Manual Excel check</div>
+          <div class="flow-state state-gap">2–3 DAYS</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node gap">⚠️</div>
+          <div class="flow-label">Email Approval</div>
+          <div class="flow-sub">No SLA / audit trail</div>
+          <div class="flow-state state-gap">NO AUDIT</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node current">💳</div>
+          <div class="flow-label">Payment Run</div>
+          <div class="flow-sub">Manual batch</div>
+          <div class="flow-state state-current">MONTHLY</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-container">
+      <div class="flow-title">FUTURE STATE — D365 F&O Automated Invoice-to-Payment</div>
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="flow-node future">📥</div>
+          <div class="flow-label">Invoice Received</div>
+          <div class="flow-sub">Portal / EDI / Email</div>
+          <div class="flow-state state-future">AUTOMATED</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node future">⚡</div>
+          <div class="flow-label">Auto Data Capture</div>
+          <div class="flow-sub">D365 OCR ingestion</div>
+          <div class="flow-state state-future">&lt;30 SECS</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node future">✅</div>
+          <div class="flow-label">Auto 3-Way Match</div>
+          <div class="flow-sub">PO · GR · Invoice</div>
+          <div class="flow-state state-future">INSTANT</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node future">🔐</div>
+          <div class="flow-label">Digital Approval</div>
+          <div class="flow-sub">Configurable workflow</div>
+          <div class="flow-state state-future">AUDITED</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node future">💳</div>
+          <div class="flow-label">Payment Run</div>
+          <div class="flow-sub">Scheduled automation</div>
+          <div class="flow-state state-future">WEEKLY</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="author-note">
+      <strong>BA Note — Process Redesign Principles</strong>
+      The future state process eliminates all manual handoffs between steps 1–4, reducing invoice processing time from an average of 8.5 business days to a target of 2 business days. Exception handling (unmatched invoices, rejected approvals) is routed through structured queues rather than email. All process changes have been validated against D365 F&O standard capabilities to minimize customization requirements.
+    </div>
+  </div>
+
+  <!-- ── KPI DASHBOARD ── -->
+  <div class="section" id="kpi">
+    <div class="section-title">KPI Dashboard — AP Performance Metrics</div>
+    <div class="section-desc">Power BI-style dashboard illustrating target KPIs for the D365 F&O implementation. Baseline vs target metrics defined in requirements sessions.</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Invoice Processing Time</div>
+        <div class="kpi-value">2.1<span style="font-size:16px;color:var(--text-muted)"> days</span></div>
+        <div class="kpi-change positive">↓ 75% from baseline (8.5 days)</div>
+        <div class="kpi-bar-container"><div class="kpi-bar" style="width:25%;background:var(--green)"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Invoice Match Rate (Auto)</div>
+        <div class="kpi-value">94<span style="font-size:16px;color:var(--text-muted)">%</span></div>
+        <div class="kpi-change positive">↑ from 0% (all manual)</div>
+        <div class="kpi-bar-container"><div class="kpi-bar" style="width:94%;background:var(--accent)"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Payment Error Rate</div>
+        <div class="kpi-value">0.8<span style="font-size:16px;color:var(--text-muted)">%</span></div>
+        <div class="kpi-change positive">↓ from 8.2% baseline</div>
+        <div class="kpi-bar-container"><div class="kpi-bar" style="width:8%;background:var(--green)"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Vendor Onboarding Time</div>
+        <div class="kpi-value">3<span style="font-size:16px;color:var(--text-muted)"> days</span></div>
+        <div class="kpi-change positive">↓ 70% from 10 days</div>
+        <div class="kpi-bar-container"><div class="kpi-bar" style="width:30%;background:var(--accent)"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">AP Team Inquiry Calls</div>
+        <div class="kpi-value">-65<span style="font-size:16px;color:var(--text-muted)">%</span></div>
+        <div class="kpi-change positive">Vendor portal self-service</div>
+        <div class="kpi-bar-container"><div class="kpi-bar" style="width:35%;background:var(--accent2)"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Approval Cycle Time</div>
+        <div class="kpi-value">1.2<span style="font-size:16px;color:var(--text-muted)"> days</span></div>
+        <div class="kpi-change positive">↓ from 4.5 days avg</div>
+        <div class="kpi-bar-container"><div class="kpi-bar" style="width:27%;background:var(--green)"></div></div>
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <div class="chart-title">Monthly Invoice Volume — Baseline vs Post-Implementation Target</div>
+      <div class="bar-chart">
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar current" style="height:70px" title="Current: 420"></div>
+            <div class="bar target" style="height:85px" title="Target: 510"></div>
+          </div>
+          <div class="bar-label">Jan</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar current" style="height:60px"></div>
+            <div class="bar target" style="height:78px"></div>
+          </div>
+          <div class="bar-label">Feb</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar current" style="height:80px"></div>
+            <div class="bar target" style="height:95px"></div>
+          </div>
+          <div class="bar-label">Mar</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar current" style="height:65px"></div>
+            <div class="bar target" style="height:82px"></div>
+          </div>
+          <div class="bar-label">Apr</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar current" style="height:75px"></div>
+            <div class="bar target" style="height:90px"></div>
+          </div>
+          <div class="bar-label">May</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar current" style="height:85px"></div>
+            <div class="bar target" style="height:100px"></div>
+          </div>
+          <div class="bar-label">Jun</div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--accent)"></div>
+          Current (Manual Process)
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--accent2);opacity:0.5"></div>
+          Target (D365 Automated)
+        </div>
+      </div>
+    </div>
+
+    <div class="author-note">
+      <strong>BA Note — Success Measurement</strong>
+      KPI baselines were established through data extraction from the legacy system (6-month average) and stakeholder interviews. Target values were defined in collaboration with the Finance Controller and validated against D365 F&O benchmark data from Microsoft's implementation documentation. These KPIs will be tracked in a live Power BI dashboard connected to D365 data post-go-live, with monthly reporting to the Finance leadership team.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showSection(id, tab) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    tab.classList.add('active');
+  }
+
+  function toggleStory(card) {
+    card.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
